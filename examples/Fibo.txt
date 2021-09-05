@@ -1,0 +1,15 @@
+\ Fibonacci stream
+\ ../examples/Fibo.txt
+
+
+\ Compute next Fibonacci pair
+: NEXT_FIBO	( x y -- y x+y )	SWAP OVER + ;
+
+: SHOW_PAIR	( x y -- x y )		2DUP SWAP . TAB . CR ;
+
+: GEN_FIBO	( n x y -- ) 		ROT 0				\ x y n 0
+					DO 
+						SHOW_PAIR 
+						NEXT_FIBO  
+					LOOP 
+					2DROP ;				\ clear stack

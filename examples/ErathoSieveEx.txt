@@ -1,0 +1,117 @@
+\ Erathosthenes sieve with simplifie array definition
+\ ../examples/ErathoSieveEx.txt
+
+
+
+\ Faster version of ARRAY
+: RARRAY ( n -- | )		CREATE 	
+					CELLS ALLOT	\ allocate EXACTLY the number of cells
+				DOES> ( n -- a ) 
+					SWAP CELLS +	;
+					\ SWAP_CELLS_PLUS ;
+
+
+
+20000 	CONSTANT 	N
+
+N	RARRAY		BUF
+
+
+
+
+
+
+\ Fill the array given by addr with n odds
+: FILL ( -- )		N 0 DO
+				I 2+   			\ I+2
+				I BUF !			\ BUF[ I ] := 2*(I+1)+1		
+			LOOP ;
+
+
+: ODD_FILL ( -- )	2 0 BUF !			\ "2" goes first
+			N 1 DO
+				I 2* 1+   		\ 2*I+1
+				I BUF !			\ BUF[ I ] := 2*I+1		
+			LOOP ;
+
+
+: SHOW_ALL ( -- )	N 0 DO
+				I   BUF   ?	." ,"
+				I 10 mod 0= IF CR THEN	\ CR each 10th line
+			LOOP ;
+
+
+
+: SHOW_NON_ZERO ( -- ) 	0							\ c <-- a counter for row split
+			N 0 DO
+				I BUF @ 					\ c BUF[ I ]
+				DUP 0<> IF 	
+						. ." ," 			\ display BUF[ I ]
+						1+ DUP 10 MOD 0= IF 		\ insert CR each 10th value
+									CR DROP 0 	\ c <-- 0
+								THEN
+					ELSE 	
+						DROP 
+					THEN					
+			LOOP 
+			DROP ;
+
+
+
+
+: BY_ADD ( x y -- x x+y )	OVER + ;
+
+
+\ eliminate all multiplications of i
+: GO_&_ELIMINATE ( i -- ) DUP	BUF @ DUP 0<> 
+					IF					\ i v=BUF[ i ] if not 0
+						DUP BY_ADD ROT N SWAP 1+	\ v v N i+1
+						DO				\ v c=v
+							DUP			\ v c c
+							I BUF @			\ v c c BUF[ I ]
+							2DUP			\ v c c BUF[ I ] c BUF[ I ]
+
+							<= IF
+								= IF 			\ v c
+									0 I BUF ! 	\ v c BUF[ I ]=0
+								THEN
+
+								BY_ADD 		\ v c+=v
+							ELSE
+								2DROP
+							THEN			\ v c
+						LOOP
+
+					THEN 
+					2DROP ;
+
+
+\ just a coarse upper approx
+: SQRT_APPROX	( x -- sq(x) )	4 / ;
+
+: ERATO_SIEVE ( -- )	N SQRT_APPROX	1	DO
+							I 	GO_&_ELIMINATE
+						LOOP ;
+
+
+
+: MAIN ODD_FILL ERATO_SIEVE SHOW_NON_ZERO  ;
+
+\ Launch
+
+
+\ ------------------------------
+
+: COMP_MAIN ODD_FILL ERATO_SIEVE ;
+' COMP_MAIN	WORD_2_MEASURE 	!
+\ 100 WORD_PERFORM
+
+
+
+
+
+
+
+
+
+

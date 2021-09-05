@@ -1,0 +1,47 @@
+\ Various examples
+\ ../examples/ForthExamples_2.txt
+
+
+10 CONSTANT DIM		\ define a constant
+DIM ARRAY DATA		\ define a 1D array 
+			\ DATA expects an index on stack
+
+: FILL 	DIM 0 DO	\ push range [0-DIM)
+        RAND I DATA !	\ push rand, push addr of I-th element, then store
+        LOOP ;
+
+
+
+: SHOW 	DIM 0 DO	\ push range [0-DIM)
+        I DATA ? CR	\ push addr of I-th element, read-and-display, new line
+        LOOP CR CR ;
+
+
+
+
+
+
+16 CONSTANT SIZE
+
+
+SIZE . CR	\ call interpreter when loading
+\ 16
+
+
+
+SIZE ARRAY DATA2
+
+
+: GET_ARRAY DATA2 ;
+
+
+: FILL2 SIZE 0 DO
+        I DUP GET_ARRAY !
+        LOOP ;
+
+
+: SHOW2 SIZE 0 DO
+        I GET_ARRAY ? CR
+        LOOP CR CR ;
+
+

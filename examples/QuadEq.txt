@@ -1,0 +1,71 @@
+\ Solution to the quadratic equation
+\ ax2 + bx + c = 0
+\ ( a b c -- )
+\ ../examples/QuadEq.txt
+
+
+\ ===============================================
+\ Basic math
+
+\ b2 - 4ac
+: DELTA ( a b c -- d ) 		ROT		\ b c a
+				F* -4.0 F*	\ b -4ac
+				SWAP DUP	\ -4ac b b
+				F* F+ ;		\ d = b2 - 4ac
+
+
+\ -b / 2a
+: X1 ( a b -- x1 )		-1. F* SWAP 2. F* F/ ;
+				
+
+
+\ ( -b +- sq(d) ) / 2a
+: X1X2 ( a b d -- x1 x2 )	SQRT ROT		\ b sq(d) a
+				2. F* ROT		\ sq(d) 2a b
+				-1. F* ROT		\ 2a -b sq(d)
+				2DUP F- -ROT F+		\ 2a (-) (+)
+				ROT DUP -ROT 		\ (-) 2a (+) 2a 
+				F/ -ROT F/		\ (+)/2a (-)/2a
+				;
+
+
+\ ===============================================
+\ Organize computation of the roots
+
+\ Given the delta (float), return num of roots (int)
+: ROOTS? ( d -- 0 | 1 | 2 )	DUP 0. F<	IF	DROP 	0
+						ELSE	0. F>	IF 2 ELSE 1 THEN
+						THEN ;
+
+
+
+: ROOTS ( a b d -- )	DUP ROOTS?	CASE	." Root(s): "
+						0 OF	." no:"  3DROP				ENDOF
+						1 OF	." one:" DROP	X1	CR .F 		ENDOF
+						2 OF	." two:" X1X2	CR .F CR .F		ENDOF
+					2DROP DROP
+					ENDCASE ;
+
+
+
+\ ===============================================
+\ Push three floats onto the stack and call this
+
+: MAIN	( a b c -- )		3DUP	DELTA			\ a b c d
+				SWAP	DROP			\ a b d
+				ROOTS			;
+
+
+
+\ ===============================================
+
+
+
+
+
+
+
+
+
+
+

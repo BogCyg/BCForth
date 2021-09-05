@@ -1,0 +1,62 @@
+\ Solution to the quadratic equation more variables
+\ ax2 + bx + c = 0
+\ ../examples/QuadEqVars.txt
+
+
+
+\ -------------------
+
+0. VALUE A
+0. VALUE B
+0. VALUE C
+
+VARIABLE DELTA
+
+\ -------------------
+
+: COMP_DELTA ( -- d )	B DUP F*
+			-4.0 A C F* F*
+			F+ ;
+
+
+: X1 ( -- x1 )		B -2.0 A F* F/ ;
+
+: X1X2 ( -- x1 x2 )	DELTA @ SQRT DUP -1. F* B F- SWAP B F-		\ (-b+sq) (-b-sq) 
+			-2.0 A F* DUP 					\ -2a -2a
+			-ROT F/ -ROT F/		;			\ (-b-sq)/-2a (-b+sq)/-2a 
+				
+
+\ -------------------
+
+
+\ Given the delta (float), return num of roots (int)
+: ROOTS? ( -- 0 | 1 | 2 )	DELTA @ 0. F<	IF			0
+						ELSE 	DELTA @ 	0. F>	IF 2 ELSE 1 THEN
+						THEN ;
+
+
+
+: ROOTS ( -- )		ROOTS?	CASE	." Root(s): "
+						0 OF	." no:"  			ENDOF
+						1 OF	." one:" X1	CR .F 		ENDOF
+						2 OF	." two:" X1X2	CR .F CR .F	ENDOF
+					DROP
+					ENDCASE ;
+
+
+\ Set the three floats in the variables A, B, C
+\
+: MAIN	( -- )	COMP_DELTA DELTA !	ROOTS	;
+
+
+\ -------------------
+
+
+
+
+
+
+
+
+
+

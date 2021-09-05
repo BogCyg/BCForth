@@ -1,0 +1,20 @@
+
+\ An example of a recursive call via the vectored execution
+\ ../examples/Factorial.txt
+
+
+VARIABLE REC_FACTORIAL
+
+
+: FACTORIAL ( n -- n! )	DUP 
+			1 > 	IF	DUP 1- 				\ n n-1
+					REC_FACTORIAL @EXECUTE 		\ recursively call FACTORIAL(n-1)
+					*				\ then mult the result
+				THEN ;
+
+
+\ This will store adr of FACTORIAL in REC_FACTORIAL
+\ which, in turn, is called in... FACTORIAL - hence the recursion
+' FACTORIAL REC_FACTORIAL !
+
+\ Now we can call FACTORIAL, first placing n on the stack

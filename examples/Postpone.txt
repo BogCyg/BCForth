@@ -1,0 +1,32 @@
+\ Examples of the immediate and postponed words
+\ ../examples/Postpone.txt
+
+
+
+: ALA	." I'm Ala " CR ;
+IMMEDIATE
+
+: OLA	." I'm Ola " CR ;
+\ not immediate
+
+
+\ ALA will be executed because it is immediate
+\ OLA will be compiled in 
+: TEST1		ALA 	OLA ;
+
+
+\ ALA and OLA will be compiled in
+: TEST2		POSTPONE ALA	OLA ;
+
+\ The same as TEST2 but now TEST3 is immediate
+: TEST3		POSTPONE ALA	OLA ;
+IMMEDIATE
+
+\ Prints both Ala and Ola when called (nothing when compiled)
+: TEST4		TEST2	;
+
+\ Prints Ola durign compilation, then always and only Ala
+: TEST5		TEST3	;
+
+
+

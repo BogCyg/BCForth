@@ -1,0 +1,46 @@
+
+\ Some examples of vectored execution
+\ ../examples/VectoredExecution.txt
+
+
+
+VARIABLE MEAL
+
+: 8AM		CR ." Breakfast " ;
+: 1PM		CR ." Lunch " ;
+: 7PM		CR ." Dinner " ;
+
+
+
+: MORNING	['] 8AM	MEAL ! ;	\ ['] immediately takes the address of its following word
+: NOON		['] 1PM MEAL ! ;
+: NIGHT		['] 7PM MEAL ! ;
+
+
+: SERVE		MEAL @ EXECUTE ;
+
+
+
+
+: EN-GREET	." Hello " ;
+: FR-GREET	." Bonjour " ;
+: AU-GREET	." G'day, mate " ;
+: PL-GREET	." Czesio " ;
+
+CREATE GREETINGS
+	' EN-GREET , 		\ 0	(tick takes an address, comma stores the address)
+	' FR-GREET ,		\ 1
+	' AU-GREET ,		\ 2
+	' PL-GREET , 		\ 3
+
+0	CONSTANT	EN
+1	CONSTANT	FR
+2	CONSTANT	AU
+3 	CONSTANT	PL
+
+: GREETING ( n -- )
+	0 MAX	3 MIN
+	CELLS GREETINGS + @EXECUTE ;
+
+
+

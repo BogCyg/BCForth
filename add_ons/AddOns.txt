@@ -1,0 +1,84 @@
+\ Utensils
+\ ../AddOns/AddOns.txt
+
+
+
+\ Some helpers
+\: 3DUP 	( a b c -- a b c a b c ) DUP 2OVER ROT		;	\ a b c a b c 
+\: 3DROP ( a b c -- ) 2DROP DROP ;
+
+
+
+
+\ A helper
+\ Almost the same as @ EXECUTE but skips 0 values
+: @EXECUTE ( xt -- ? ) @ DUP 0<> IF EXECUTE ELSE DROP THEN ;
+
+
+
+
+
+
+
+\ Memory storage map: [#c,#r][<--- #c*#r ---->]
+\ Row-wise storage, index @ (r,c): #c*r + c
+: 2ARRAY ( #r #c -- | )	CREATE 
+				OVER OVER , , * CELLS ALLOT	\ allocate the dimensions AND the array buffer of r*c cells \n
+
+			DOES> 	( r c -- addr(r,c) )		
+				
+				DUP 2OVER 2OVER			\ r c a a r c a a 
+				@ SWAP CELL+ @			\ r c a a r c #c #r
+
+				-ROT	>= ABORT" Col index out of range"		\ r c a a r #r (c #c)
+					>= ABORT" Row index out of range"		\ r c a a
+
+				@ 2SWAP	-ROT * + 2+ CELLS + ;				\ a c #c r ==> a+(r+c*#c+2)*8
+
+
+
+
+
+
+\ ===================================================
+\ Word performance measurement framework
+
+VARIABLE 	WORD_2_MEASURE
+
+
+: WORD_PERFORM	( runs -- ms_per_run )	
+
+		TIMER_START					\ runs tstart
+			SWAP	DUP	0			\ tstart runs runs 0
+
+				DO	
+					WORD_2_MEASURE	@EXECUTE
+				LOOP
+
+			SWAP					\ runs tstart
+		TIMER_END 	SWAP	/	;		\ tdur / runs
+
+
+
+\ To measure the time performance of a word e.g. XXX do as follows:
+\ (1) store its execution token in WORD_2_MEASURE
+\ ' XXX	WORD_2_MEASURE 	!
+\ (2) push the number of runs onto the stack
+\ 100
+\ (3) call WORD_PERFORM
+\ WORD_PERFORM
+\ (4) display result [ms] per single(!) run
+\ .
+
+\ ===================================================
+
+\ Usuful in my daily computations
+: F+.	F+ .F ;
+: F-.	F- .F ;
+: F*.	F* .F ;
+: F/.	F/ .F ;
+
+
+
+
+

@@ -1,0 +1,57 @@
+\ Various examples
+\ ../examples/ForthExamples.txt
+
+
+: accumulate ( oldcrc char -- newcrc)
+	256 * 							\ shift char to hi-order byte
+	xor 							\ & xor into previous crc
+	8 0 	DO 						\ Then for eight repetitions,
+		dup 0< 		IF 				\ if hi-order bit is "1"
+			16386 xor 				\ xor it with mask and
+			dup + 					\ shift it left one place
+			1+ 					\ set lo-order bit to "1"
+				ELSE 				\ otherwise, i.e. hi-order bit is "0"
+			dup + 					\ shift it left one place
+				THEN
+		LOOP ; 						\ complete the loop
+
+
+
+
+\ --------------------------------------------------------------------
+
+
+10 array measure
+
+13 2 measure !		\ write 13 into the 2nd cell of the measure array
+
+2 measure @ .		\ read out 2nd cell of measure and print it
+
+
+\ --------------------------------------------------------------------
+\ MSG is a word to create new words, such as (CR)
+
+: MSG CREATE DOES> COUNT TYPE ;
+
+
+MSG (CR) 2 C, 13 C, 10 C,
+
+
+\ Test of [ ... ] for immediate execution during compilation 
+
+
+: TEST [ (CR) (CR) (CR) ." Test is being compiled "
+(CR) (CR) (CR) ]
+        10 20 30 ;
+
+
+: ?DIGIT ( c -- t )   [CHAR] 0 [CHAR] 9 WITHIN? ;
+
+
+
+: CC CREATE DOES> ;
+
+
+CC TENS 1 , 10 ,
+
+

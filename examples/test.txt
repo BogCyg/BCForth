@@ -1,0 +1,36 @@
+\ Various tests
+\ ../examples/test.txt
+
+
+\ 1024 CONSTANT N
+2000 CONSTANT N
+
+N	ARRAY	BUF
+
+
+
+: ala ." ala " ;
+
+
+
+: kota ." ma kota " ;
+
+
+
+
+
+: T9 CASE ." chosen "
+        0 OF  ." no"  ENDOF
+        1 OF  ." one" ENDOF
+        2 OF  ." two" CR .F CR .F CR ENDOF
+	DUP . 	\ show it before it vanishes
+        ENDCASE ;
+
+
+\ 1. 5. 2 	T9
+
+
+
+
+
+

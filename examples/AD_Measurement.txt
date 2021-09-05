@@ -1,0 +1,30 @@
+\ Erathosthenes sieve
+\ ../AD_Measurement.txt
+
+
+
+1000 CONSTANT SIZE
+
+
+CREATE DATA SIZE CELLS ALLOT
+
+
+DATA SIZE CELLS ERASE
+
+
+
+
+: A/D	13 ;	\ make measurement from the A/D converter (dummy 13 now)
+
+
+: FILL 	SIZE 0 	DO
+        		A/D DATA I CELLS + !
+        	LOOP ;
+
+
+: SHOW 	SIZE 0 	DO
+        		I 10 MOD 0= IF CR THEN
+        		DATA I CELLS + @ .
+        	LOOP CR ;
+
+
