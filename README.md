@@ -7,7 +7,7 @@ Written by Prof. Bogusław Cyganek (C) in 2021 as an exemplary
 project extending the book
 "Introduction to Programming with C++ for Engineers", Wiley
 
-https://www.wiley.com/en-pl/Introduction+to+Programming+with+C%2B%2B+for+Engineers-p-9781119431107
+http://home.agh.edu.pl/~cyganek/BookCpp.htm
 
 
 
