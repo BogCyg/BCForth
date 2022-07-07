@@ -9,11 +9,5 @@ project extending the book
 
 http://home.agh.edu.pl/~cyganek/BookCpp.htm
 
-
-
-An in-depth description of the BCForth platform has been published as a 4th lecture note to the above book
-
-http://home.agh.edu.pl/~cyganek/Forth_BC_v013.pdf
-
 ----------------------------------------------------------------------
 
